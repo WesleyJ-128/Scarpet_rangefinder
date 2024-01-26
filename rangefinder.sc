@@ -18,6 +18,21 @@
 global_point1Tuple = [];
 global_point2Tuple = [];
 
+calculatePos() -> (
+    print('Calculation inputs: ' + global_point1Tuple + ', ' + global_point2Tuple);
+
+    // The rangefinder works by finding the point where the two rays defined by the player's sightings intersect.
+    // This can be solved one dimension at a time, since we have the look direction components already.
+    // We first calculate the "time" until our "projectiles" will collide— these are imaginary projectiles that
+    // move at 1m/s.  t = d/V, so we calculate the x-distance traveled and closing velocity in the x direction.
+    t = (global_point2Tuple:0 - global_point1Tuple:0) / (global_point1Tuple:3 - global_point2Tuple:3);
+    // Now we can calculate the block position easily
+    x = global_point1Tuple:0 + t * global_point1Tuple:3;
+    y = global_point1Tuple:1 + t * global_point1Tuple:4;
+    z = global_point1Tuple:2 + t * global_point1Tuple:5;
+    return ([x, y, z])
+);
+
 __on_player_releases_item(player, item_tuple, hand)-> (
     if (item_tuple:0 == 'spyglass',
         posTuple = player ~ 'pos';
@@ -30,10 +45,11 @@ __on_player_releases_item(player, item_tuple, hand)-> (
             print(global_point1Tuple),
         item_tuple:2:'display':'Name' == '{"text":"Sight 2"}', // Else If
             // Point 2
-            global_point1Tuple = [];
+            global_point2Tuple = [];
             put(global_point2Tuple, null, posTuple, 'extend');
             put(global_point2Tuple, null, lookTuple, 'extend');
             print(global_point2Tuple),
-        )
+        );
+        print(calculatePos())
     )
 )
