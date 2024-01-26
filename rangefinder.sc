@@ -19,7 +19,7 @@ global_point1Tuple = [];
 global_point2Tuple = [];
 
 calculatePos() -> (
-    print('Calculation inputs: ' + global_point1Tuple + ', ' + global_point2Tuple);
+    //print('Calculation inputs: ' + global_point1Tuple + ', ' + global_point2Tuple);
 
     // The rangefinder works by finding the point where the two rays defined by the player's sightings intersect.
     // This can be solved one dimension at a time, since we have the look direction components already.
@@ -42,13 +42,13 @@ __on_player_releases_item(player, item_tuple, hand)-> (
             global_point1Tuple = [];
             put(global_point1Tuple, null, posTuple, 'extend');
             put(global_point1Tuple, null, lookTuple, 'extend');
-            print(global_point1Tuple),
+            //print(global_point1Tuple),
         item_tuple:2:'display':'Name' == '{"text":"Sight 2"}', // Else If
             // Point 2
             global_point2Tuple = [];
             put(global_point2Tuple, null, posTuple, 'extend');
             put(global_point2Tuple, null, lookTuple, 'extend');
-            print(global_point2Tuple),
+            //print(global_point2Tuple),
         );
         print(calculatePos())
     )
