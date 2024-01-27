@@ -24,8 +24,24 @@ calculatePos() -> (
     // The rangefinder works by finding the point where the two rays defined by the player's sightings intersect.
     // This can be solved one dimension at a time, since we have the look direction components already.
     // We first calculate the "time" until our "projectiles" will collide— these are imaginary projectiles that
-    // move at 1m/s.  t = d/V, so we calculate the x-distance traveled and closing velocity in the x direction.
-    t = (global_point2Tuple:0 - global_point1Tuple:0) / (global_point1Tuple:3 - global_point2Tuple:3);
+    // move at 1m/s.  This is most accurate when the position delta used to calculate time of "impact" is greatest,
+    // so first determine which axis has the largest delta, then use that.
+    dx = global_point2Tuple:0 - global_point1Tuple:0;
+    dy = global_point2Tuple:1 - global_point1Tuple:1;
+    dz = global_point2Tuple:2 - global_point1Tuple:2;
+    big = max(dx, dy, dz);
+    if (big == dx,
+        print('x');
+        //  t = d/V
+        t = (dx) / (global_point1Tuple:3 - global_point2Tuple:3),
+    big == dy, // Else If
+        print('y');
+        t = (dy) / (global_point1Tuple:4 - global_point2Tuple:4),
+    // Else
+        print('z');
+        t = (dz) / (global_point1Tuple:5 - global_point2Tuple:5)
+    );
+    
     // Now we can calculate the block position easily
     x = global_point1Tuple:0 + t * global_point1Tuple:3;
     y = global_point1Tuple:1 + t * global_point1Tuple:4;
